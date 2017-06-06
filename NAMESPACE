@@ -1,0 +1,5 @@
+export(parDist)
+export(parallelDist)
+importFrom(Rcpp, evalCpp)
+importFrom(RcppParallel, RcppParallelLibs)
+useDynLib(parallelDist, .registration = TRUE)
