@@ -1,11 +1,13 @@
-691153cb47895f2fc0a29c53039096f2 *DESCRIPTION
-3657785ef1a272526f28c49ca25e160e *NAMESPACE
-e5ad37b0c76ce74fa462684e62a36c69 *R/RcppExports.R
+8ca9fb2bee2d31772b6fc20ad6433c67 *DESCRIPTION
+8e3f8005a6144c8ab5be2a6dc53ad283 *NAMESPACE
+4865a57d4d5fc8d1b1bb6c572792b77b *R/RcppExports.R
 3b9bf2e9ce20c7b4f5e70b2f3b89cb4f *R/parDist.R
+af22444f8563e9dfcdebd8f4eca1935b *README.md
 11549410261a6ca6d5921e0a8b88ba41 *build/vignette.rds
+1eb0cc03d7eb18d5088b99c0ff3532e3 *inst/NEWS.Rd
 9b986a228a0bde37b60a526fc6d983c5 *inst/doc/parallelDist.R
 8e0954fa50924425ce60a2080525ed4c *inst/doc/parallelDist.Rnw
-b7fbfab71e548411df1bad799759d62b *inst/doc/parallelDist.pdf
+be11564862152998f183dfbf6909c53b *inst/doc/parallelDist.pdf
 606d0b9a1c351c58e2393ecb44761326 *man/parDist.Rd
 790544f0973ebab455c7bde574651823 *src/BinaryCount.h
 58da5056955f1911ac7e7f6ee89c52bc *src/DistanceBinary.h
@@ -22,7 +24,7 @@ aab57514e3b640b85655e6f2752d269f *src/Makevars
 808804845e27b6852fdc4919fb69b8df *src/RcppExports.cpp
 632f9c662f2ea5f4f690bdf7b3e55882 *src/StepPattern.h
 3c4502ba27673c5be04037f90d437653 *src/Utility.cpp
-31a8b9628c42e07e6a175b04243947ce *src/Utility.h
+439b9838ec027e1b3f83bc657464a4b1 *src/Utility.h
 e9df2ca1d180458c4b1d7b3fe863aa44 *src/parallelDist.cpp
 2dc2dfcfaf9fe4ad223f9905febf06cb *src/parallelDist_init.c
 d3e85dea0a98d23e0d2ca58f6716a51e *tests/testthat.R
