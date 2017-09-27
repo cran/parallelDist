@@ -21,8 +21,6 @@
 # Calculates distance matrices in parallel
 #
 parDist <- parallelDist <- function (x, method = "euclidean", diag = FALSE, upper = FALSE, threads = NULL, ...) {
-  if (!is.na(pmatch(method, "euclidian")))
-    method <- "euclidean"
   METHODS <- c("bhjattacharyya", "bray", "canberra", "chord", "divergence",
                "dtw", "euclidean", "fJaccard", "geodesic", "hellinger",
                "kullback", "mahalanobis", "manhattan", "maximum", "minkowski",
@@ -30,18 +28,26 @@ parDist <- parallelDist <- function (x, method = "euclidean", diag = FALSE, uppe
                "binary", "braun-blanquet", "dice", "fager", "faith",
                "hamman", "kulczynski1", "kulczynski2", "michael", "mountford",
                "mozley", "ochiai", "phi", "russel", "simple matching",
-               "simpson", "stiles", "tanimoto", "yule", "yule2") # w/o "levenshtein"
-  method <- pmatch(method, METHODS)
-  if (is.na(method))
+               "simpson", "stiles", "tanimoto", "yule", "yule2", "custom") # w/o "levenshtein"
+  methodIdx <- pmatch(method, METHODS)
+  if (is.na(methodIdx))
     stop("Invalid distance method")
-  if (method == -1)
-    stop("Ambiguous distance method")
+  method <- METHODS[methodIdx]
 
   arguments <- list(...)
   # set step pattern (for dtw distances)
   step.pattern.name <- getStepPatternName(arguments)
   if (!any(is.na(step.pattern.name))) {
     arguments[["step.pattern"]] <- step.pattern.name[1]
+  }
+
+  # check funct argument for custom distance measure
+  if (method == "custom") {
+    funcPtr = arguments[["func"]]
+    if (is.null(funcPtr)) {
+      stop("Parameter 'func' is missing.")
+    }
+    checkPtr(funcPtr)
   }
 
   # set number of threads
@@ -51,22 +57,29 @@ parDist <- parallelDist <- function (x, method = "euclidean", diag = FALSE, uppe
 
   N <- ifelse(is.list(x), length(x), nrow(x))
   attrs <- list(Size = N, Labels = names(x), Diag = diag, Upper = upper,
-                method = METHODS[method], call = match.call(), class = "dist")
+                method = METHODS[methodIdx], call = match.call(), class = "dist")
 
   # check data type
-  if (is.list(x)) {
+  if (is.list(x) && inherits(x, "list")) {
     methods.first.row.only <- c("chord", "geodesic", "podani")
     if (method %in% methods.first.row.only) {
       warning("Only first row of each matrix is used for distance calculation.")
     }
-    return(.Call('parallelDist_cpp_parallelDistVec', PACKAGE = 'parallelDist', x, attrs, arguments = arguments))
+    return(.Call('_parallelDist_cpp_parallelDistVec', PACKAGE = 'parallelDist', x, attrs, arguments = arguments))
   } else {
     if (is.matrix(x)) {
-      return(.Call('parallelDist_cpp_parallelDistMatrixVec', PACKAGE = 'parallelDist', x, attrs, arguments = arguments))
+      return(.Call('_parallelDist_cpp_parallelDistMatrixVec', PACKAGE = 'parallelDist', x, attrs, arguments = arguments))
     } else {
       stop("x must be a matrix or a list of matrices.")
     }
   }
+}
+
+getType <- function (code) {
+  tokenize <- strsplit(code, "[[:space:]]*(\\(|\\)){1}[[:space:]]*")[[1]]
+  tokens <- strsplit(tokenize[[1]], "[[:space:]]+")[[1]]
+  tokens <- tokens[seq_len(length(tokens) - 1)]
+  paste(tokens[tokens != ""], collapse = " ")
 }
 
 getStepPatternName <- function(arguments) {
@@ -100,4 +113,32 @@ getStepPatternName <- function(arguments) {
     }
   }
   step.pattern.name
+}
+
+checkPtr <- function(ptr) {
+  stopifnot(inherits(ptr, "XPtr"))
+
+  actualReturnType <- attr(ptr, "type")
+  expectedReturnType <- "double"
+
+  actualArgTypes <- sapply(attr(ptr, "args"), getType, USE.NAMES = FALSE)
+  expectedArgTypes <- rep("const arma::mat&", 2)
+
+  msg <- character()
+  # check return type
+  if (actualReturnType != expectedReturnType) {
+    msg <- paste(c(msg, paste0("  Wrong return type '", actualReturnType,  "', should be '", expectedReturnType, "'.")), collapse = "\n")
+  }
+  # check number of arguments
+  if (length(actualArgTypes) != 2) {
+    msg <- paste(c(msg, paste0("  Wrong number of arguments ('", length(actualArgTypes) ,"'), should be 2.")), collapse = "\n")
+  } else {
+    # check argument types
+    for (i in which(!(expectedArgTypes == actualArgTypes))) {
+      msg <- paste(c(msg, paste0("  Wrong argument type '", actualArgTypes[[i]], "', should be '", expectedArgTypes[[i]], "'.")), collapse = "\n")
+    }
+  }
+
+  if (length(msg))
+    stop("Bad XPtr signature:\n", msg)
 }

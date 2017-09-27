@@ -181,31 +181,28 @@ plot.distances <- ggplot(data=comparison.overall, aes(x=method, y=min, fill=expr
   theme_light() +
   #scale_x_discrete(name="", limits = rev(levels(comparison.overall$method))) +
   coord_flip() +
-    #theme(plot.title = element_text(hjust = 0.5), legend.position="bottom") +
- # theme(legend.position="bottom") +
  guides(fill=guide_legend(title="Method")) +
 labs(title = "Distance matrix computation time (5000 series of length 10)",
-     #subtitle = "Carat weight by Price",
      caption = "Excluded distances for better comparison: dtw, mahalanobis, minkowski")
 print(plot.distances)
 
 
 ###################################################
-### code chunk number 4: parallelDist.Rnw:286-288 (eval = FALSE)
+### code chunk number 4: parallelDist.Rnw:283-285 (eval = FALSE)
 ###################################################
 ## # matrix where each row corresponds to one series
 ## sample.matrix <- matrix(c(1:100), ncol = 10)
 
 
 ###################################################
-### code chunk number 5: parallelDist.Rnw:293-295 (eval = FALSE)
+### code chunk number 5: parallelDist.Rnw:290-292 (eval = FALSE)
 ###################################################
 ## # euclidean distance
 ## dist.euclidean <- parDist(sample.matrix, method = "euclidean")
 
 
 ###################################################
-### code chunk number 6: parallelDist.Rnw:300-305 (eval = FALSE)
+### code chunk number 6: parallelDist.Rnw:297-302 (eval = FALSE)
 ###################################################
 ## # convert to matrix
 ## as.matrix(dist.euclidean)
@@ -215,7 +212,7 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 7: parallelDist.Rnw:310-315 (eval = FALSE)
+### code chunk number 7: parallelDist.Rnw:307-312 (eval = FALSE)
 ###################################################
 ## # minkowski distance with parameter p=2
 ## parDist(x = sample.matrix, method = "minkowski", p=2)
@@ -225,20 +222,20 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 8: parallelDist.Rnw:320-321 (eval = FALSE)
+### code chunk number 8: parallelDist.Rnw:317-318 (eval = FALSE)
 ###################################################
 ## ?parDist
 
 
 ###################################################
-### code chunk number 9: parallelDist.Rnw:326-328 (eval = FALSE)
+### code chunk number 9: parallelDist.Rnw:323-325 (eval = FALSE)
 ###################################################
 ## # use 2 threads
 ## dist.euclidean <- parDist(sample.matrix, method = "euclidean", threads = 2)
 
 
 ###################################################
-### code chunk number 10: parallelDist.Rnw:337-340 (eval = FALSE)
+### code chunk number 10: parallelDist.Rnw:334-337 (eval = FALSE)
 ###################################################
 ## # defining a list of matrices, where each list entry row corresponds to a two dimensional series
 ## tmp.mat <- matrix(c(1:40), ncol = 10)
@@ -246,14 +243,31 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 11: parallelDist.Rnw:345-347 (eval = FALSE)
+### code chunk number 11: parallelDist.Rnw:342-344 (eval = FALSE)
 ###################################################
 ## # multi-dimensional dynamic time warping
 ## parDist(x = sample.matrix.list, method = "dtw")
 
 
 ###################################################
-### code chunk number 12: parallelDist.Rnw:354-360 (eval = FALSE)
+### code chunk number 13: parallelDist.Rnw:360-372 (eval = FALSE)
+###################################################
+## # RcppArmadillo is used as dependency
+## library(RcppArmadillo)
+## # Use RcppXPtrUtils for simple usage of C++ external pointers
+## library(RcppXPtrUtils)
+## 
+## # compile user-defined function and return pointer (RcppArmadillo is used as dependency)
+## euclideanFuncPtr <- cppXPtr("double customDist(const arma::mat &A, const arma::mat &B) { return sqrt(arma::accu(arma::square(A - B))); }",
+##                             depends = c("RcppArmadillo"))
+## 
+## # distance matrix for user-defined euclidean distance function
+## # (note that method is set to "custom")
+## parDist(matrix(1:16, ncol=2), method="custom", func = euclideanFuncPtr)
+
+
+###################################################
+### code chunk number 14: parallelDist.Rnw:403-409 (eval = FALSE)
 ###################################################
 ## # load dtw package
 ## library(dtw)

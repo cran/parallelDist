@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // cpp_parallelDistVec
 Rcpp::NumericVector cpp_parallelDistVec(Rcpp::List dataList, Rcpp::List attrs, Rcpp::List arguments);
-RcppExport SEXP parallelDist_cpp_parallelDistVec(SEXP dataListSEXP, SEXP attrsSEXP, SEXP argumentsSEXP) {
+RcppExport SEXP _parallelDist_cpp_parallelDistVec(SEXP dataListSEXP, SEXP attrsSEXP, SEXP argumentsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 // cpp_parallelDistMatrixVec
 Rcpp::NumericVector cpp_parallelDistMatrixVec(arma::mat dataMatrix, Rcpp::List attrs, Rcpp::List arguments);
-RcppExport SEXP parallelDist_cpp_parallelDistMatrixVec(SEXP dataMatrixSEXP, SEXP attrsSEXP, SEXP argumentsSEXP) {
+RcppExport SEXP _parallelDist_cpp_parallelDistMatrixVec(SEXP dataMatrixSEXP, SEXP attrsSEXP, SEXP argumentsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -31,4 +31,15 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(cpp_parallelDistMatrixVec(dataMatrix, attrs, arguments));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_parallelDist_cpp_parallelDistVec", (DL_FUNC) &_parallelDist_cpp_parallelDistVec, 3},
+    {"_parallelDist_cpp_parallelDistMatrixVec", (DL_FUNC) &_parallelDist_cpp_parallelDistMatrixVec, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_parallelDist(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }
