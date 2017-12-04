@@ -1,11 +1,10 @@
 ### R code from vignette source 'parallelDist.Rnw'
 
 ###################################################
-### code chunk number 1: parallelDist.Rnw:48-51
+### code chunk number 1: parallelDist.Rnw:31-33
 ###################################################
 prettyVersion <- packageDescription("parallelDist")$Version
 require(ggplot2)
-require(highlight)
 
 
 ###################################################
@@ -188,21 +187,21 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 4: parallelDist.Rnw:283-285 (eval = FALSE)
+### code chunk number 4: parallelDist.Rnw:266-268 (eval = FALSE)
 ###################################################
 ## # matrix where each row corresponds to one series
 ## sample.matrix <- matrix(c(1:100), ncol = 10)
 
 
 ###################################################
-### code chunk number 5: parallelDist.Rnw:290-292 (eval = FALSE)
+### code chunk number 5: parallelDist.Rnw:273-275 (eval = FALSE)
 ###################################################
 ## # euclidean distance
 ## dist.euclidean <- parDist(sample.matrix, method = "euclidean")
 
 
 ###################################################
-### code chunk number 6: parallelDist.Rnw:297-302 (eval = FALSE)
+### code chunk number 6: parallelDist.Rnw:280-285 (eval = FALSE)
 ###################################################
 ## # convert to matrix
 ## as.matrix(dist.euclidean)
@@ -212,7 +211,7 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 7: parallelDist.Rnw:307-312 (eval = FALSE)
+### code chunk number 7: parallelDist.Rnw:290-295 (eval = FALSE)
 ###################################################
 ## # minkowski distance with parameter p=2
 ## parDist(x = sample.matrix, method = "minkowski", p=2)
@@ -222,35 +221,36 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 8: parallelDist.Rnw:317-318 (eval = FALSE)
+### code chunk number 8: parallelDist.Rnw:300-301 (eval = FALSE)
 ###################################################
 ## ?parDist
 
 
 ###################################################
-### code chunk number 9: parallelDist.Rnw:323-325 (eval = FALSE)
+### code chunk number 9: parallelDist.Rnw:306-308 (eval = FALSE)
 ###################################################
 ## # use 2 threads
 ## dist.euclidean <- parDist(sample.matrix, method = "euclidean", threads = 2)
 
 
 ###################################################
-### code chunk number 10: parallelDist.Rnw:334-337 (eval = FALSE)
+### code chunk number 10: parallelDist.Rnw:317-321 (eval = FALSE)
 ###################################################
-## # defining a list of matrices, where each list entry row corresponds to a two dimensional series
+## # defining a list of matrices, where each
+## # list entry row corresponds to a two dimensional series
 ## tmp.mat <- matrix(c(1:40), ncol = 10)
 ## sample.matrix.list <- list(tmp.mat[1:2,], tmp.mat[3:4,])
 
 
 ###################################################
-### code chunk number 11: parallelDist.Rnw:342-344 (eval = FALSE)
+### code chunk number 11: parallelDist.Rnw:326-328 (eval = FALSE)
 ###################################################
 ## # multi-dimensional dynamic time warping
 ## parDist(x = sample.matrix.list, method = "dtw")
 
 
 ###################################################
-### code chunk number 13: parallelDist.Rnw:360-372 (eval = FALSE)
+### code chunk number 12: parallelDist.Rnw:345-358 (eval = FALSE)
 ###################################################
 ## # RcppArmadillo is used as dependency
 ## library(RcppArmadillo)
@@ -258,7 +258,8 @@ print(plot.distances)
 ## library(RcppXPtrUtils)
 ## 
 ## # compile user-defined function and return pointer (RcppArmadillo is used as dependency)
-## euclideanFuncPtr <- cppXPtr("double customDist(const arma::mat &A, const arma::mat &B) { return sqrt(arma::accu(arma::square(A - B))); }",
+## euclideanFuncPtr <- cppXPtr("double customDist(const arma::mat &A, const arma::mat &B) {
+##                             return sqrt(arma::accu(arma::square(A - B))); }",
 ##                             depends = c("RcppArmadillo"))
 ## 
 ## # distance matrix for user-defined euclidean distance function
@@ -267,7 +268,7 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 14: parallelDist.Rnw:403-409 (eval = FALSE)
+### code chunk number 13: parallelDist.Rnw:389-395 (eval = FALSE)
 ###################################################
 ## # load dtw package
 ## library(dtw)
