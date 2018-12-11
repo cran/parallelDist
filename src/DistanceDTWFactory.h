@@ -1,6 +1,6 @@
 // DistanceDTWFactory.h
 //
-// Copyright (C)  2017  Alexander Eckert
+// Copyright (C)  2017, 2018  Alexander Eckert
 //
 // This file is part of parallelDist.
 //
@@ -22,13 +22,14 @@
 
 #include "IDistance.h"
 #include <memory>
+#include <string>
 
 //==============================
 // Distance DTW Factory
 //==============================
 class DistanceDTWFactory {
 public:
-    std::shared_ptr<IDistance> createDistanceFunction(std::string& distName, Rcpp::List& arguments);
+    std::shared_ptr<IDistance> createDistanceFunction(const std::string& distName, const Rcpp::List& arguments);
 };
 
-#endif
+#endif  // DISTANCEDTWFACTORY_H_

@@ -1,6 +1,6 @@
 // DistanceFactory.cpp
 //
-// Copyright (C)  2017  Alexander Eckert
+// Copyright (C)  2017, 2018  Alexander Eckert
 //
 // This file is part of parallelDist.
 //
@@ -19,12 +19,13 @@
 
 #include "DistanceFactory.h"
 #include "DistanceDTWFactory.h"
-#include "Utility.h"
+#include "Util.h"
 #include "DistanceDist.h"
 #include "DistanceBinary.h"
 
-std::shared_ptr<IDistance> DistanceFactory::createDistanceFunction(Rcpp::List& attrs, Rcpp::List& arguments) {
-    using namespace utility;
+std::shared_ptr<IDistance> DistanceFactory::createDistanceFunction(const Rcpp::List& attrs,
+  const Rcpp::List& arguments) {
+    using util::isEqualStr;
     std::string distName = attrs["method"];
     std::shared_ptr<IDistance> distanceFunction = NULL;
 
@@ -48,6 +49,8 @@ std::shared_ptr<IDistance> DistanceFactory::createDistanceFunction(Rcpp::List& a
         distanceFunction = std::make_shared<DistanceHellinger>();
     } else if (isEqualStr(distName, "kullback")) {
         distanceFunction = std::make_shared<DistanceKullback>();
+    } else if (isEqualStr(distName, "cosine")) {
+        distanceFunction = std::make_shared<DistanceCosine>();
     } else if (isEqualStr(distName, "mahalanobis")) {
         bool isInvertedCov = false;
         bool isCov = arguments.containsElementNamed("cov");
@@ -75,9 +78,9 @@ std::shared_ptr<IDistance> DistanceFactory::createDistanceFunction(Rcpp::List& a
     } else if (isEqualStr(distName, "maximum")) {
         distanceFunction = std::make_shared<DistanceMaximum>();
     } else if (isEqualStr(distName, "minkowski")) {
-        int p = 2;
+        double p = 2;
         if (arguments.containsElementNamed("p")) {
-          p = Rcpp::as<int >(arguments["p"]);
+          p = Rcpp::as<double >(arguments["p"]);
         }
         distanceFunction = std::make_shared<DistanceMinkowski>(p);
     } else if (isEqualStr(distName, "podani")) {
@@ -128,6 +131,8 @@ std::shared_ptr<IDistance> DistanceFactory::createDistanceFunction(Rcpp::List& a
         distanceFunction = std::make_shared<DistanceYule>();
     } else if (isEqualStr(distName, "yule2")) {
         distanceFunction = std::make_shared<DistanceYule2>();
+    } else if (isEqualStr(distName, "hamming")) {
+      distanceFunction = std::make_shared<DistanceHamming>();
     } else if (isEqualStr(distName, "custom")) {
         SEXP func_ = arguments["func"];
         funcPtr func = *Rcpp::XPtr<funcPtr>(func_);
@@ -135,6 +140,5 @@ std::shared_ptr<IDistance> DistanceFactory::createDistanceFunction(Rcpp::List& a
     } else {
         distanceFunction = std::make_shared<DistanceEuclidean>();
     }
-
     return distanceFunction;
 }

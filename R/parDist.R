@@ -28,7 +28,9 @@ parDist <- parallelDist <- function (x, method = "euclidean", diag = FALSE, uppe
                "binary", "braun-blanquet", "dice", "fager", "faith",
                "hamman", "kulczynski1", "kulczynski2", "michael", "mountford",
                "mozley", "ochiai", "phi", "russel", "simple matching",
-               "simpson", "stiles", "tanimoto", "yule", "yule2", "custom") # w/o "levenshtein"
+               "simpson", "stiles", "tanimoto", "yule", "yule2", "cosine"
+               , "hamming"
+               , "custom") # w/o "levenshtein"
   methodIdx <- pmatch(method, METHODS)
   if (is.na(methodIdx))
     stop("Invalid distance method")
@@ -56,7 +58,7 @@ parDist <- parallelDist <- function (x, method = "euclidean", diag = FALSE, uppe
   }
 
   N <- ifelse(is.list(x), length(x), nrow(x))
-  attrs <- list(Size = N, Labels = names(x), Diag = diag, Upper = upper,
+  attrs <- list(Size = N, Labels = dimnames(x)[[1L]], Diag = diag, Upper = upper,
                 method = METHODS[methodIdx], call = match.call(), class = "dist")
 
   # check data type

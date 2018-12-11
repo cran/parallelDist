@@ -1,15 +1,19 @@
 Package: parallelDist
 Type: Package
 Title: Parallel Distance Matrix Computation using Multiple Threads
-Version: 0.2.2
-Author: Alexander Eckert [aut, cre]
+Version: 0.2.3
+Author: Alexander Eckert [aut, cre],
+  Lucas Godoy [ctb],
+  Srikanth KS [ctb]
 Authors@R: c(
-    person("Alexander", "Eckert", role = c("aut", "cre"), email = "info@alexandereckert.com")
+    person("Alexander", "Eckert", role = c("aut", "cre"), email = "info@alexandereckert.com"),
+    person("Lucas", "Godoy", role = "ctb", email = "lucasdac.godoy@gmail.com"),
+    person("Srikanth", "KS", role = "ctb", email = "sri.teach@gmail.com")
     )
 Maintainer: Alexander Eckert <info@alexandereckert.com>
 Description: A fast parallelized alternative to R's native 'dist' function to
     calculate distance matrices for continuous, binary, and multi-dimensional
-    input matrices, which supports a broad variety of 39 predefined distance
+    input matrices, which supports a broad variety of 41 predefined distance
     functions from the 'stats', 'proxy' and 'dtw' R packages, as well as user-
     defined functions written in C++. For ease of use, the 'parDist' function
     extends the signature of the 'dist' function and uses the same parameter
@@ -33,6 +37,6 @@ Imports: Rcpp (>= 0.12.6), RcppParallel (>= 4.3.20)
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 SystemRequirements: C++11
 Suggests: dtw, ggplot2, proxy, testthat, RcppArmadillo, RcppXPtrUtils
-Packaged: 2018-09-24 18:26:43 UTC; user
+Packaged: 2018-12-11 17:45:06 UTC; alex
 Repository: CRAN
-Date/Publication: 2018-09-24 19:30:02 UTC
+Date/Publication: 2018-12-11 23:30:03 UTC
