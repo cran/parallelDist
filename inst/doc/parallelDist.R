@@ -10,45 +10,37 @@ require(ggplot2)
 ###################################################
 ### code chunk number 2: performanceDtw
 ###################################################
-comparison <- structure(list(expr = c("10", "100", "1000", "10000", "10", "100",
-"1000", "10000", "20000", "30000", "10", "100", "1000", "10000",
-"20000", "30000"), min = c(0.02173888, 2.508674745, 247.536645172,
-24893.826760134, 0.001671714, 0.003850385, 0.36582544, 37.370421954,
-150.985056588, 344.875058432, 0.000135292, 0.001352922, 0.123839325,
-11.108382113, 43.928450332, 99.357240761), lq = c(0.02173888,
-2.508674745, 247.536645172, 24893.826760134, 0.001671714, 0.003850385,
-0.36582544, 37.370421954, 150.985056588, 344.875058432, 0.000135292,
-0.001352922, 0.123839325, 11.108382113, 43.928450332, 99.357240761
-), mean = c(0.02173888, 2.508674745, 247.536645172, 24893.826760134,
-0.001671714, 0.003850385, 0.36582544, 37.370421954, 150.985056588,
-344.875058432, 0.000135292, 0.001352922, 0.123839325, 11.108382113,
-43.928450332, 99.357240761), median = c(0.02173888, 2.508674745,
+comparison <- structure(list(expr = c(10, 100, 1000, 10000, 10, 100, 1000,
+10000, 10, 100, 1000, 10000), min = c(0.02173888, 2.508674745,
 247.536645172, 24893.826760134, 0.001671714, 0.003850385, 0.36582544,
-37.370421954, 150.985056588, 344.875058432, 0.000135292, 0.001352922,
-0.123839325, 11.108382113, 43.928450332, 99.357240761), uq = c(0.02173888,
+37.370421954, 0.000135292, 0.001352922, 0.123839325, 11.108382113
+), lq = c(0.02173888, 2.508674745, 247.536645172, 24893.826760134,
+0.001671714, 0.003850385, 0.36582544, 37.370421954, 0.000135292,
+0.001352922, 0.123839325, 11.108382113), mean = c(0.02173888,
 2.508674745, 247.536645172, 24893.826760134, 0.001671714, 0.003850385,
-0.36582544, 37.370421954, 150.985056588, 344.875058432, 0.000135292,
-0.001352922, 0.123839325, 11.108382113, 43.928450332, 99.357240761
-), max = c(0.02173888, 2.508674745, 247.536645172, 24893.826760134,
-0.001671714, 0.003850385, 0.36582544, 37.370421954, 150.985056588,
-344.875058432, 0.000135292, 0.001352922, 0.123839325, 11.108382113,
-43.928450332, 99.357240761), neval = c(1, 1, 1, 1, 1, 1, 1, 1,
-1, 1, 1, 1, 1, 1, 1, 1), method = c("dtw", "dtw", "dtw", "dtw",
-"parDist threads=1", "parDist threads=1", "parDist threads=1",
-"parDist threads=1", "parDist threads=1", "parDist threads=1",
-"parDist threads=8", "parDist threads=8", "parDist threads=8",
-"parDist threads=8", "parDist threads=8", "parDist threads=8"
-)), .Names = c("expr", "min", "lq", "mean", "median", "uq", "max",
-"neval", "method"), row.names = c(NA, -16L), unit = "seconds", class = "data.frame")
+0.36582544, 37.370421954, 0.000135292, 0.001352922, 0.123839325,
+11.108382113), median = c(0.02173888, 2.508674745, 247.536645172,
+24893.826760134, 0.001671714, 0.003850385, 0.36582544, 37.370421954,
+0.000135292, 0.001352922, 0.123839325, 11.108382113), uq = c(0.02173888,
+2.508674745, 247.536645172, 24893.826760134, 0.001671714, 0.003850385,
+0.36582544, 37.370421954, 0.000135292, 0.001352922, 0.123839325,
+11.108382113), max = c(0.02173888, 2.508674745, 247.536645172,
+24893.826760134, 0.001671714, 0.003850385, 0.36582544, 37.370421954,
+0.000135292, 0.001352922, 0.123839325, 11.108382113), neval = c(1,
+1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1), method = c("dtw", "dtw", "dtw",
+"dtw", "parDist threads=1", "parDist threads=1", "parDist threads=1",
+"parDist threads=1", "parDist threads=8", "parDist threads=8",
+"parDist threads=8", "parDist threads=8")), unit = "seconds", row.names = c(2L,
+3L, 4L, 5L, 9L, 10L, 11L, 12L, 16L, 17L, 18L, 19L), class = "data.frame")
 fig2 <- ggplot(data=comparison, aes(x=expr, y=min, group = method, colour = method)) +
   geom_line() +
   geom_point() +
-  expand_limits(y=0) +
-   guides(fill=guide_legend(title="Method")) +
+  scale_y_log10(breaks=c(0.0001,.001,.01,.1,1,10,100,1000,10000), labels=c(0.0001,.001,.01,.1,1,10,100,1000,10000)) +
+  scale_x_log10(breaks=c(0,10,100,1000,10000),labels=c(0,10,100,1000,10000)) +
+  guides(fill=guide_legend(title="Method")) +
   xlab("Number of series (length 10)") +
   ylab("Computation time in s") +
   theme_light() +
- # theme(plot.title = element_text(hjust = 0.5), legend.position="bottom") +
   theme(legend.position="bottom") +
   ggtitle("Distance matrix computation time (dtw, parDist)")
 print(fig2)
@@ -187,21 +179,21 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 4: parallelDist.Rnw:266-268 (eval = FALSE)
+### code chunk number 4: parallelDist.Rnw:258-260 (eval = FALSE)
 ###################################################
 ## # matrix where each row corresponds to one series
 ## sample.matrix <- matrix(c(1:100), ncol = 10)
 
 
 ###################################################
-### code chunk number 5: parallelDist.Rnw:273-275 (eval = FALSE)
+### code chunk number 5: parallelDist.Rnw:265-267 (eval = FALSE)
 ###################################################
 ## # euclidean distance
 ## dist.euclidean <- parDist(sample.matrix, method = "euclidean")
 
 
 ###################################################
-### code chunk number 6: parallelDist.Rnw:280-285 (eval = FALSE)
+### code chunk number 6: parallelDist.Rnw:272-277 (eval = FALSE)
 ###################################################
 ## # convert to matrix
 ## as.matrix(dist.euclidean)
@@ -211,7 +203,7 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 7: parallelDist.Rnw:290-295 (eval = FALSE)
+### code chunk number 7: parallelDist.Rnw:282-287 (eval = FALSE)
 ###################################################
 ## # minkowski distance with parameter p=2
 ## parDist(x = sample.matrix, method = "minkowski", p=2)
@@ -221,20 +213,20 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 8: parallelDist.Rnw:300-301 (eval = FALSE)
+### code chunk number 8: parallelDist.Rnw:292-293 (eval = FALSE)
 ###################################################
 ## ?parDist
 
 
 ###################################################
-### code chunk number 9: parallelDist.Rnw:306-308 (eval = FALSE)
+### code chunk number 9: parallelDist.Rnw:298-300 (eval = FALSE)
 ###################################################
 ## # use 2 threads
 ## dist.euclidean <- parDist(sample.matrix, method = "euclidean", threads = 2)
 
 
 ###################################################
-### code chunk number 10: parallelDist.Rnw:317-321 (eval = FALSE)
+### code chunk number 10: parallelDist.Rnw:309-313 (eval = FALSE)
 ###################################################
 ## # defining a list of matrices, where each
 ## # list entry row corresponds to a two dimensional series
@@ -243,14 +235,14 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 11: parallelDist.Rnw:326-328 (eval = FALSE)
+### code chunk number 11: parallelDist.Rnw:318-320 (eval = FALSE)
 ###################################################
 ## # multi-dimensional dynamic time warping
 ## parDist(x = sample.matrix.list, method = "dtw")
 
 
 ###################################################
-### code chunk number 12: parallelDist.Rnw:345-358 (eval = FALSE)
+### code chunk number 12: parallelDist.Rnw:337-350 (eval = FALSE)
 ###################################################
 ## # RcppArmadillo is used as dependency
 ## library(RcppArmadillo)
@@ -268,7 +260,7 @@ print(plot.distances)
 
 
 ###################################################
-### code chunk number 13: parallelDist.Rnw:389-395 (eval = FALSE)
+### code chunk number 13: parallelDist.Rnw:381-387 (eval = FALSE)
 ###################################################
 ## # load dtw package
 ## library(dtw)

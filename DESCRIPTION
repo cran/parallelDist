@@ -1,7 +1,7 @@
 Package: parallelDist
 Type: Package
 Title: Parallel Distance Matrix Computation using Multiple Threads
-Version: 0.2.4
+Version: 0.2.6
 Author: Alexander Eckert [aut, cre],
   Lucas Godoy [ctb],
   Srikanth KS [ctb]
@@ -27,9 +27,8 @@ Description: A fast parallelized alternative to R's native 'dist' function to
     the implementation stays flexible enough to support different DTW step
     patterns and normalization methods.
 License: GPL (>= 2)
-LazyData: TRUE
 URL: https://github.com/alexeckert/parallelDist,
-        https://www.alexandereckert.com/R
+        https://www.alexandereckert.com/projects/#r-packages
 BugReports: https://github.com/alexeckert/parallelDist/issues
 NeedsCompilation: yes
 Depends: R (>= 3.0.2)
@@ -37,6 +36,6 @@ Imports: Rcpp (>= 0.12.6), RcppParallel (>= 4.3.20)
 LinkingTo: Rcpp, RcppParallel, RcppArmadillo
 SystemRequirements: C++11
 Suggests: dtw, ggplot2, proxy, testthat, RcppArmadillo, RcppXPtrUtils
-Packaged: 2018-12-12 21:13:09 UTC; alex
+Packaged: 2022-02-03 22:25:21 UTC; phreazer
 Repository: CRAN
-Date/Publication: 2018-12-12 22:50:02 UTC
+Date/Publication: 2022-02-03 23:50:02 UTC
